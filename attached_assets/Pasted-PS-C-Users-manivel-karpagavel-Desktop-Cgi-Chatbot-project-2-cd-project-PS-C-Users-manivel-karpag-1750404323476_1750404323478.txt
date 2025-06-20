@@ -1,0 +1,73 @@
+PS C:\Users\manivel.karpagavel\Desktop\Cgi\Chatbot\project 2> cd project
+PS C:\Users\manivel.karpagavel\Desktop\Cgi\Chatbot\project 2\project> cd "C:\Users\manivel.karpagavel\Desktop\Cgi\Chatbot\project 2\project"
+>> py -3.11 -m venv chatbotenv
+>> .\chatbotenv\Scripts\activate
+(chatbotenv) PS C:\Users\manivel.karpagavel\Desktop\Cgi\Chatbot\project 2\project> python main.py
+🛢️  Oil & Gas Financial Analysis Chatbot
+==================================================
+🚀 Starting conversational interface...
+💡 Tip: Use --full-update to download latest reports first
+2025-06-20 12:54:29,378 - src.database.database - INFO - Database initialized at: data/financial_chatbot.db
+2025-06-20 12:54:33,455 - src.llm.ollama_interface - INFO - Ollama not available: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/tags (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A1E4BFE810>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-06-20 12:54:33,456 - src.llm.ollama_interface - INFO - Will use fallback responses. To enable LLM features, install and run Ollama:
+2025-06-20 12:54:33,457 - src.llm.ollama_interface - INFO - 1. Download from https://ollama.ai
+2025-06-20 12:54:33,458 - src.llm.ollama_interface - INFO - 2. Run: ollama serve
+2025-06-20 12:54:33,458 - src.llm.ollama_interface - INFO - 3. Run: ollama pull llama3
+2025-06-20 12:54:33,460 - src.database.database - INFO - Database initialized at: data/financial_chatbot.db
+
+============================================================
+🛢️  Oil & Gas Financial Analysis Chatbot
+============================================================
+🔍 Checking for latest financial reports...
+✅ Found existing reports. Use 'refresh' command to update.
+
+Hey there! 👋
+
+I'm your Oil & Gas Financial Analyst, and I'm here to help you dive deep into the latest quarterly earnings from the major energy companies.
+
+I have access to the most recent financial reports from Shell, BP, ExxonMobil, and Chevron, and I can help you understand everything from revenue trends to production metrics, cash flow analysis, and strategic insights.
+
+What would you like to explore? You could ask me something like:
+• "How did the oil majors perform this quarter?"
+• "Compare Shell and BP's latest results"
+• "What's driving ExxonMobil's cash flow?"
+• Or anything else that's on your mind about these companies!
+
+What interests you most?
+
+
+💬 You: hello
+
+🤔 Analyzing your question...
+
+🤖 Assistant: Hey there! 👋
+
+I'm your Oil & Gas Financial Analyst, and I'm here to help you dive deep into the latest quarterly earnings from the major energy companies.
+
+I have access to the most recent financial reports from Shell, BP, ExxonMobil, and Chevron, and I can help you understand everything from revenue trends to production metrics, cash flow analysis, and strategic insights.
+
+What would you like to explore? You could ask me something like:
+• "How did the oil majors perform this quarter?"
+• "Compare Shell and BP's latest results"
+• "What's driving ExxonMobil's cash flow?"
+• Or anything else that's on your mind about these companies!
+
+What interests you most?
+
+💬 You: "How did the oil majors perform this quarter?"
+
+🤔 Analyzing your question...
+
+🤖 Assistant: Hey there! 👋
+
+I'm your Oil & Gas Financial Analyst, and I'm here to help you dive deep into the latest quarterly earnings from the major energy companies.
+
+I have access to the most recent financial reports from Shell, BP, ExxonMobil, and Chevron, and I can help you understand everything from revenue trends to production metrics, cash flow analysis, and strategic insights.
+
+What would you like to explore? You could ask me something like:
+• "How did the oil majors perform this quarter?"
+• "Compare Shell and BP's latest results"
+• "What's driving ExxonMobil's cash flow?"
+• Or anything else that's on your mind about these companies!
+
+What interests you most?
