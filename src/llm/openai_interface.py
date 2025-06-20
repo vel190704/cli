@@ -157,107 +157,96 @@ class OpenAIInterface:
         query_lower = user_query.lower()
         
         # Provide basic responses based on query patterns
-        if "shell" in query_lower:
-            return """Based on Shell's latest financial data in our database:
+        # Check for comparison queries first (before individual company analysis)
+        if any(word in query_lower for word in ["compare", "vs", "versus", "better", "best", "analytics", "perform", "competitors"]):
+            from src.utils.financial_analyzer import FinancialIntelligenceEngine
+            from src.database.database import DatabaseManager
             
-Shell is one of the largest integrated oil companies globally. Recent performance indicators show:
-- Strong revenue generation from both upstream and downstream operations
-- Significant cash flow from operations supporting dividend payments
-- Active portfolio optimization and capital discipline
-- Focus on energy transition and lower-carbon investments
-
-For detailed AI-powered analysis, please add credits to your OpenAI account at platform.openai.com/billing"""
+            db = DatabaseManager()
+            analyzer = FinancialIntelligenceEngine(db)
+            return "📊 " + analyzer.compare_companies(user_query)
+        
+        elif "shell" in query_lower:
+            from src.utils.financial_analyzer import FinancialIntelligenceEngine
+            from src.database.database import DatabaseManager
+            
+            db = DatabaseManager()
+            analyzer = FinancialIntelligenceEngine(db)
+            return analyzer.analyze_company_performance("Shell", user_query)
             
         elif "bp" in query_lower:
-            return """Based on BP's latest financial data in our database:
+            from src.utils.financial_analyzer import FinancialIntelligenceEngine
+            from src.database.database import DatabaseManager
             
-BP has been transforming its business model with focus on:
-- Balanced portfolio of oil, gas, and renewable energy
-- Strong free cash flow generation
-- Progressive dividend policy
-- Significant investments in low-carbon energy transition
-
-For detailed AI-powered analysis, please add credits to your OpenAI account at platform.openai.com/billing"""
+            db = DatabaseManager()
+            analyzer = FinancialIntelligenceEngine(db)
+            return analyzer.analyze_company_performance("BP", user_query)
             
         elif "exxonmobil" in query_lower or "exxon" in query_lower:
-            return """Based on ExxonMobil's latest financial data in our database:
+            from src.utils.financial_analyzer import FinancialIntelligenceEngine
+            from src.database.database import DatabaseManager
             
-ExxonMobil remains focused on traditional oil and gas operations:
-- Leading position in U.S. shale oil production
-- Strong refining and chemical operations
-- Disciplined capital allocation approach
-- Emphasis on shareholder returns through dividends and buybacks
-
-For detailed AI-powered analysis, please add credits to your OpenAI account at platform.openai.com/billing"""
+            db = DatabaseManager()
+            analyzer = FinancialIntelligenceEngine(db)
+            return analyzer.analyze_company_performance("ExxonMobil", user_query)
             
         elif "chevron" in query_lower:
-            return """Based on Chevron's latest financial data in our database:
-            
-Chevron maintains a conservative operational approach:
-- Strong balance sheet with low debt levels
-- Consistent dividend payments with long track record
-- Focus on low-cost, high-return projects
-- Geographic diversification across key oil regions
-
-For detailed AI-powered analysis, please add credits to your OpenAI account at platform.openai.com/billing"""
-            
-        elif any(word in query_lower for word in ["compare", "vs", "versus", "better", "best", "analytics", "perform"]):
-            # Get actual financial data for comparison
+            from src.utils.financial_analyzer import FinancialIntelligenceEngine
             from src.database.database import DatabaseManager
+            
             db = DatabaseManager()
-            companies = ["Shell", "BP", "ExxonMobil", "Chevron"]
+            analyzer = FinancialIntelligenceEngine(db)
+            return analyzer.analyze_company_performance("Chevron", user_query)
             
-            comparison_text = "📊 COMPANY PERFORMANCE COMPARISON\n\n"
-            company_data = {}
+        elif any(word in query_lower for word in ["compare", "vs", "versus", "better", "best", "analytics", "perform", "competitors"]):
+            # Advanced comparison analysis using intelligence engine
+            from src.utils.financial_analyzer import FinancialIntelligenceEngine
+            from src.database.database import DatabaseManager
             
-            for company in companies:
-                data = db.get_latest_financial_data(company)
-                if data:
-                    company_data[company] = data
-                    comparison_text += f"{company}:\n"
-                    comparison_text += f"  Revenue: ${data.get('revenue', 0):,.0f}M\n"
-                    comparison_text += f"  Net Income: ${data.get('net_income', 0):,.0f}M\n"
-                    comparison_text += f"  Free Cash Flow: ${data.get('free_cash_flow', 0):,.0f}M\n"
-                    comparison_text += f"  Production: {data.get('production_volume', 0):,.1f} {data.get('production_unit', 'BOE/day')}\n"
-                    
-                    # Calculate profit margin
-                    revenue = data.get('revenue')
-                    net_income = data.get('net_income')
-                    if revenue and net_income and revenue > 0:
-                        margin = (net_income / revenue) * 100
-                        comparison_text += f"  Profit Margin: {margin:.1f}%\n"
-                    comparison_text += "\n"
+            db = DatabaseManager()
+            analyzer = FinancialIntelligenceEngine(db)
+            return "📊 " + analyzer.compare_companies(user_query)
             
-            # Simple ranking analysis
-            if company_data:
-                comparison_text += "KEY RANKINGS:\n"
-                
-                # Revenue ranking
-                revenue_ranking = sorted(company_data.items(), key=lambda x: x[1].get('revenue', 0), reverse=True)
-                comparison_text += f"Revenue Leader: {revenue_ranking[0][0]} (${revenue_ranking[0][1].get('revenue', 0):,.0f}M)\n"
-                
-                # Profitability ranking
-                profit_ranking = sorted(company_data.items(), key=lambda x: x[1].get('net_income', 0), reverse=True)
-                comparison_text += f"Profit Leader: {profit_ranking[0][0]} (${profit_ranking[0][1].get('net_income', 0):,.0f}M)\n"
-                
-                # Cash flow ranking
-                cf_ranking = sorted(company_data.items(), key=lambda x: x[1].get('free_cash_flow', 0), reverse=True)
-                comparison_text += f"Cash Flow Leader: {cf_ranking[0][0]} (${cf_ranking[0][1].get('free_cash_flow', 0):,.0f}M)\n"
+        elif any(word in query_lower for word in ["invest", "investment", "buy", "recommend", "which", "whom"]):
+            # Advanced investment analysis using intelligence engine
+            from src.utils.financial_analyzer import FinancialIntelligenceEngine
+            from src.database.database import DatabaseManager
             
-            comparison_text += "\nFor detailed AI-powered analysis with market context and strategic insights, add credits at platform.openai.com/billing"
-            return comparison_text
+            db = DatabaseManager()
+            analyzer = FinancialIntelligenceEngine(db)
+            return "💼 " + analyzer.analyze_investment_opportunity(user_query)
             
         else:
-            return """I have access to financial data from Shell, BP, ExxonMobil, and Chevron, but I need OpenAI API access to provide intelligent analysis.
+            # Enhanced responses using intelligence engine
+            from src.utils.financial_analyzer import FinancialIntelligenceEngine
+            from src.database.database import DatabaseManager
+            
+            db = DatabaseManager()
+            analyzer = FinancialIntelligenceEngine(db)
+            
+            # Try to extract company name from query
+            mentioned_company = None
+            for company in ["Shell", "BP", "ExxonMobil", "Chevron"]:
+                if company.lower() in query_lower:
+                    mentioned_company = company
+                    break
+            
+            if mentioned_company:
+                return analyzer.analyze_company_performance(mentioned_company, user_query)
+            
+            # Check if it's a comparison query
+            if any(word in query_lower for word in ["compare", "comparison"]):
+                return analyzer.compare_companies(user_query)
+            
+            return """I can provide comprehensive analysis using financial data from Shell, BP, ExxonMobil, and Chevron.
 
-Current issue: Your OpenAI API key has exceeded its quota. Please add credits at platform.openai.com/billing
+Try asking:
+- "Which company should I invest in?" - for investment recommendations
+- "Compare Shell vs BP" - for detailed comparisons  
+- "How is Chevron performing?" - for specific company analysis
+- "Show me the best cash flow generator" - for specific metrics
 
-Available commands while you resolve this:
-- 'companies' - List available companies
-- 'refresh' - Update financial data
-- Ask about specific companies by name
-
-For full intelligent analysis, please add credits to your OpenAI account."""
+I analyze real financial data to provide actionable insights."""
 
     async def analyze_financial_data(self, company_data: Dict[str, Any], analysis_type: str = "comprehensive") -> str:
         """Analyze financial data for a specific company."""
