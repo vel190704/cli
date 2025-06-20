@@ -92,7 +92,10 @@ The application follows a modular architecture with clear separation of concerns
 - Modular structure allows for horizontal scaling of components
 
 ## Changelog
-- June 20, 2025. Initial setup
+- June 20, 2025: Initial setup
+- June 20, 2025: Fixed Ollama integration issue by implementing OpenAI cloud LLM integration
+- June 20, 2025: Added intelligent fallback responses with actual financial data analysis
+- June 20, 2025: Enhanced comparative analytics functionality for quota-limited scenarios
 
 ## User Preferences
 

@@ -201,12 +201,51 @@ Chevron maintains a conservative operational approach:
 
 For detailed AI-powered analysis, please add credits to your OpenAI account at platform.openai.com/billing"""
             
-        elif any(word in query_lower for word in ["compare", "vs", "versus"]):
-            return """I can access financial data for Shell, BP, ExxonMobil, and Chevron in our database. However, to provide detailed comparative analysis with insights, calculations, and strategic implications, I need access to the OpenAI API.
-
-Please add credits to your OpenAI account at platform.openai.com/billing to enable intelligent comparative analysis.
-
-You can use commands like 'companies' to see available data or 'refresh' to update financial reports."""
+        elif any(word in query_lower for word in ["compare", "vs", "versus", "better", "best", "analytics", "perform"]):
+            # Get actual financial data for comparison
+            from src.database.database import DatabaseManager
+            db = DatabaseManager()
+            companies = ["Shell", "BP", "ExxonMobil", "Chevron"]
+            
+            comparison_text = "📊 COMPANY PERFORMANCE COMPARISON\n\n"
+            company_data = {}
+            
+            for company in companies:
+                data = db.get_latest_financial_data(company)
+                if data:
+                    company_data[company] = data
+                    comparison_text += f"{company}:\n"
+                    comparison_text += f"  Revenue: ${data.get('revenue', 0):,.0f}M\n"
+                    comparison_text += f"  Net Income: ${data.get('net_income', 0):,.0f}M\n"
+                    comparison_text += f"  Free Cash Flow: ${data.get('free_cash_flow', 0):,.0f}M\n"
+                    comparison_text += f"  Production: {data.get('production_volume', 0):,.1f} {data.get('production_unit', 'BOE/day')}\n"
+                    
+                    # Calculate profit margin
+                    revenue = data.get('revenue')
+                    net_income = data.get('net_income')
+                    if revenue and net_income and revenue > 0:
+                        margin = (net_income / revenue) * 100
+                        comparison_text += f"  Profit Margin: {margin:.1f}%\n"
+                    comparison_text += "\n"
+            
+            # Simple ranking analysis
+            if company_data:
+                comparison_text += "KEY RANKINGS:\n"
+                
+                # Revenue ranking
+                revenue_ranking = sorted(company_data.items(), key=lambda x: x[1].get('revenue', 0), reverse=True)
+                comparison_text += f"Revenue Leader: {revenue_ranking[0][0]} (${revenue_ranking[0][1].get('revenue', 0):,.0f}M)\n"
+                
+                # Profitability ranking
+                profit_ranking = sorted(company_data.items(), key=lambda x: x[1].get('net_income', 0), reverse=True)
+                comparison_text += f"Profit Leader: {profit_ranking[0][0]} (${profit_ranking[0][1].get('net_income', 0):,.0f}M)\n"
+                
+                # Cash flow ranking
+                cf_ranking = sorted(company_data.items(), key=lambda x: x[1].get('free_cash_flow', 0), reverse=True)
+                comparison_text += f"Cash Flow Leader: {cf_ranking[0][0]} (${cf_ranking[0][1].get('free_cash_flow', 0):,.0f}M)\n"
+            
+            comparison_text += "\nFor detailed AI-powered analysis with market context and strategic insights, add credits at platform.openai.com/billing"
+            return comparison_text
             
         else:
             return """I have access to financial data from Shell, BP, ExxonMobil, and Chevron, but I need OpenAI API access to provide intelligent analysis.
